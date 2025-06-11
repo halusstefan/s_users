@@ -1,7 +1,13 @@
 package com.slide.test.core_ui.navigation.animation
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,9 +26,7 @@ fun SlideFromLeftAnimation(content: @Composable () -> Unit) {
     AnimatedVisibility(
         visibleState = transitionState,
         modifier = Modifier,
-        enter = slideInHorizontally(
-            initialOffsetX = { -40 }
-        ) + expandVertically(
+        enter = expandVertically(
             expandFrom = Alignment.Top
         ) + fadeIn(initialAlpha = 0.3f),
         exit = slideOutHorizontally() + fadeOut()) {

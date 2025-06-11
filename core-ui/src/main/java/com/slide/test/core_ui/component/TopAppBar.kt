@@ -24,6 +24,7 @@ fun TopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    navigationIcon: @Composable () -> Unit = {}
 ) {
     Box(
         Modifier
@@ -42,6 +43,7 @@ fun TopAppBar(
             title = { Text(text = title) },
             colors = colors,
             modifier = modifier,
+            navigationIcon = navigationIcon,
         )
     }
 }
