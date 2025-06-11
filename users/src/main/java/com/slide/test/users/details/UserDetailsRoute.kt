@@ -65,7 +65,7 @@ fun UserDetailsScreen(
     when (state.value) {
         is UserDetailsViewState.Loading -> Loading(modifier)
         is UserDetailsViewState.Success -> {
-            UserDetails(state.value as UserDetailsViewState.Success)
+            UserDetails(modifier = modifier, state = state.value as UserDetailsViewState.Success)
         }
 
         is UserDetailsViewState.Error -> Error(state.value as UserDetailsViewState.Error)

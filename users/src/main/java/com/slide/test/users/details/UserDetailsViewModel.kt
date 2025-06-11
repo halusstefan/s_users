@@ -6,11 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.slide.test.core.Result
 import com.slide.test.repository.UsersRepository
 import com.slide.test.repository.model.PostModel
+import com.slide.test.repository.model.UserModel
 import com.slide.test.users.navigation.UserDetailsDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -20,29 +22,45 @@ import javax.inject.Inject
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    userRepository: UsersRepository,
+    private val userRepository: UsersRepository,
 ) : ViewModel() {
 
     val userId: Long = checkNotNull(
         savedStateHandle[UserDetailsDestination.Input.userIdArg]
     )
-
-    val viewState: StateFlow<UserDetailsViewState> = userRepository.getUserPosts(userId)
-        .map { postsResult -> postsResult.toUserDetailsViewState() }
-        .stateIn(
+    val viewState = userRepository.getUserPosts(userId)
+        .combine(getUserDetailsFlow()) { postsResult, userDetails ->
+            createUserDetailsViewState(postsResult, userDetails)
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = UserDetailsViewState.Loading,
         )
+
+    private fun getUserDetailsFlow(): Flow<UserModel?> = flow {
+        emit(userRepository.getUser(userId))
+    }
+
+    private fun createUserDetailsViewState(
+        result: Result<List<PostModel>>,
+        user: UserModel?
+    ): UserDetailsViewState {
+        if (user == null) return UserDetailsViewState.Error("User not found")
+
+        return UserDetailsViewState.Success(
+            userName = user.name,
+            userImage = UserAvatar.UserInitials("UN"),
+            userEmail = user.email,
+            postViewState = result.toPostViewState(),
+        )
+    }
 }
 
-private fun Result<List<PostModel>>.toUserDetailsViewState(): UserDetailsViewState {
+private fun Result<List<PostModel>>.toPostViewState(): PostViewState {
     return when (this) {
-        is Result.Error -> UserDetailsViewState.Error(this.throwable?.localizedMessage ?: "")
-        Result.Loading -> UserDetailsViewState.Loading
-        is Result.Success<*> -> UserDetailsViewState.Success(
-            userName = "Fake user name",
-            userImage = UserAvatar.UserInitials("UN"),
+        is Result.Error -> PostViewState.Error(this.throwable?.localizedMessage ?: "")
+        Result.Loading -> PostViewState.Loading
+        is Result.Success<*> -> PostViewState.Success(
             post = (this.data as List<PostModel>).firstOrNull()?.toPostUI()
         )
     }

@@ -68,6 +68,7 @@ internal class UsersRepositoryImplementation @Inject constructor(
 
     override fun getUserPosts(userId: Long): Flow<Result<List<PostModel>>> = flow {
         try {
+            emit(Result.Loading)
             emit(
                 Result.Success(
                     usersService.getUserPosts(userId)
