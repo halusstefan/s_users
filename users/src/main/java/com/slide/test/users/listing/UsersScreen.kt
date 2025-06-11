@@ -2,6 +2,7 @@ package com.slide.test.users.listing
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -38,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.MutableLiveData
 import com.slide.test.core_ui.component.InfoDialog
 import com.slide.test.core_ui.component.LoadingWheel
+import com.slide.test.core_ui.component.TopAppBar
 import com.slide.test.core_ui.theme.SliideTestTheme
 import com.slide.test.usecase.users.model.Gender
 import com.slide.test.usecase.users.model.UserStatus
@@ -47,6 +50,7 @@ import com.slide.test.users.model.UserUI
 /**
  * Created by Stefan Halus on 18 May 2022
  */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun UsersRoute(
     modifier: Modifier = Modifier,
@@ -66,14 +70,38 @@ fun UsersRoute(
             userDeleteResult.value = null
         }
     }
-
-    UsersScreen(
+    Scaffold(
         modifier = modifier,
-        viewState = viewState,
-        onDeleteIntent = { userUI -> navigateToDelete(userUI.id, userUI.name) },
-        onUserClick = { userUI -> navigateToDetails(userUI.id) },
-        onCreateIntent = navigateToCreate,
-        onErrorAcknowledged = { viewModel.dispatch(Action.LoadUserList) })
+        topBar = {
+            TopAppBar("Users")
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier
+                    .windowInsetsPadding(
+                        WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+                    )
+                    .padding(16.dp),
+                onClick = navigateToCreate
+            ) {
+                Icon(
+                    imageVector = Icons.TwoTone.PersonAdd,
+                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    contentDescription = null,
+                    modifier = Modifier
+                )
+            }
+        }) { padding ->
+
+        UsersScreen(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(padding),
+            viewState = viewState,
+            onDeleteIntent = { userUI -> navigateToDelete(userUI.id, userUI.name) },
+            onUserClick = { userUI -> navigateToDetails(userUI.id) },
+            onErrorAcknowledged = { viewModel.dispatch(Action.LoadUserList) })
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,36 +111,20 @@ fun UsersScreen(
     viewState: State,
     onDeleteIntent: (UserUI) -> Unit = {},
     onUserClick: (UserUI) -> Unit = {},
-    onCreateIntent: () -> Unit,
     onErrorAcknowledged: () -> Unit = {}
 ) {
+    when {
+        viewState.isLoading -> LoadingUsers(modifier)
+        viewState.isEmpty -> EmptyUsers(modifier)
+        viewState.errorMessage != null -> ErrorDialog(
+            errorMessage = viewState.errorMessage, onErrorAcknowledged
+        )
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier.padding(16.dp), onClick = onCreateIntent
-            ) {
-                Icon(
-                    imageVector = Icons.TwoTone.PersonAdd,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
-                    contentDescription = null,
-                    modifier = Modifier
-                )
-            }
-        }) {
-        when {
-            viewState.isLoading -> LoadingUsers()
-            viewState.isEmpty -> EmptyUsers()
-            viewState.errorMessage != null -> ErrorDialog(
-                errorMessage = viewState.errorMessage, onErrorAcknowledged
-            )
-
-            else -> UserList(
-                modifier, viewState.userList,
-                onDeleteIntent = onDeleteIntent,
-                onUserClick = onUserClick,
-            )
-        }
+        else -> UserList(
+            modifier, viewState.userList,
+            onDeleteIntent = onDeleteIntent,
+            onUserClick = onUserClick,
+        )
     }
 }
 
@@ -162,13 +174,11 @@ fun LoadingUsers(modifier: Modifier = Modifier) {
             contentDesc = stringResource(id = string.users_loading),
         )
     }
-
-
 }
 
 @Composable
-fun EmptyUsers() {
-    Text(text = "Empty users", fontSize = 20.sp, modifier = Modifier.padding(30.dp))
+fun EmptyUsers(modifier: Modifier) {
+    Text(text = "Empty users", fontSize = 20.sp, modifier = modifier.padding(30.dp))
 }
 
 @Composable
