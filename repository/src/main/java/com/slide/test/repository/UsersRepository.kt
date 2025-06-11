@@ -4,6 +4,7 @@ import com.slide.test.core.Page
 import com.slide.test.core.Result
 import com.slide.test.core.asResult
 import com.slide.test.network.service.UsersService
+import com.slide.test.repository.cache.UsersInMemCache
 import com.slide.test.repository.exceptions.UsersApiExceptionHandler
 import com.slide.test.repository.model.CreateUserRequestModel
 import com.slide.test.repository.model.PostModel
@@ -13,9 +14,11 @@ import com.slide.test.repository.model.toModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -31,16 +34,22 @@ interface UsersRepository {
     fun createUser(createUserRequestModel: CreateUserRequestModel): Completable
 
     fun getUserPosts(userId: Long): Flow<Result<List<PostModel>>>
+
+    suspend fun getUser(userId: Long): UserModel?
 }
 
 internal class UsersRepositoryImplementation @Inject constructor(
     private val usersService: UsersService,
-    private val usersApiExceptionHandler: UsersApiExceptionHandler
+    private val usersApiExceptionHandler: UsersApiExceptionHandler,
+    private val usersInMemCache: UsersInMemCache
 ) : UsersRepository {
 
     override fun getUsers(page: Long?): Observable<Result<Page<UserModel>>> {
         return usersService.fetchUsers(page)
             .map { pageDto -> pageDto.toModel() }
+            .doOnSuccess {
+                GlobalScope.launch { usersInMemCache.putAll(it.data) }
+            }
             .asResult()
     }
 
@@ -73,4 +82,7 @@ internal class UsersRepositoryImplementation @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getUser(userId: Long): UserModel? {
+        return usersInMemCache.get(userId)
+    }
 }
