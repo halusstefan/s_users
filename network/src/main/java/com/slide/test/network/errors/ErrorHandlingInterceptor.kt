@@ -9,6 +9,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.asResponseBody
 import okio.Buffer
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
@@ -23,7 +24,11 @@ class ErrorHandlingInterceptor : Interceptor {
         val response: Response = chain.proceed(originalRequest)
 
         val responseBody = copy(response.body, Long.MAX_VALUE)
-        val rawJson = JSONObject(responseBody?.string())
+        val rawJson = try {
+            JSONObject(responseBody?.string())
+        } catch (e: JSONException) {
+            throw GoRestApiException(500, listOf(ApiError("JSON", e.message ?: "")))
+        }
 
         return if (ERROR_CODES.contains(rawJson.getInt("code"))) {
             throw getException(rawJson)

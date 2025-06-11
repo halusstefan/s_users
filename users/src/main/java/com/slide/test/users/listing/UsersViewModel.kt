@@ -41,7 +41,7 @@ class UsersViewModel @Inject constructor(
             )
             is Change.Error -> state.copy(
                 isLoading = false,
-                errorMessage = change.throwable?.message
+                errorMessage = change.throwable?.localizedMessage
             )
             is Change.EmptyUserList -> state.copy(
                 isLoading = false,
@@ -77,7 +77,6 @@ class UsersViewModel @Inject constructor(
                             userList.map { user -> user.toUI(timeFormatter) }
                         }
                     }
-                    .subscribeOn(Schedulers.io())
                     .map<Change> {
                         when (it) {
                             is Result.Success -> Change.UserList(it.data)

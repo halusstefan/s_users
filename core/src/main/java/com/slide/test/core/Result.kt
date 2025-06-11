@@ -2,7 +2,6 @@ package com.slide.test.core
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import java.lang.Exception
 
 /**
  * Created by Stefan Halus on 19 May 2022

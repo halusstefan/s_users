@@ -35,7 +35,6 @@ internal class GetLatestUsersUseCaseImplementation @Inject constructor(
             }
     }
 
-    @OptIn(ExperimentalTime::class)
     private fun getLastPage(metadata: PageMetadata): Observable<Result<List<User>>> {
         val lastPage = metadata.pages
         return usersRepository.getUsers(null)

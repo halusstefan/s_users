@@ -1,7 +1,5 @@
 package com.slide.test.users.delete
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rxjava3.subscribeAsState
@@ -20,7 +18,7 @@ import com.slide.test.users.R
 fun UserDeleteDialogRoute(
     modifier: Modifier = Modifier,
     onDismiss: (Boolean) -> Unit,
-    viewModel: UserDeleteViewModel = hiltViewModel()
+    viewModel: UserDeleteViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.observableState.subscribeAsState(initial = viewModel.initialState)
 
@@ -29,7 +27,6 @@ fun UserDeleteDialogRoute(
         onDismiss = onDismiss,
         onApprove = { viewModel.dispatch(Action.UserDeleteConfirmation) }
     )
-
 }
 
 @Composable
@@ -64,13 +61,12 @@ fun SuccessDialog(userName: String = "", onDismiss: () -> Unit) {
         onApprove = onDismiss,
         onDismiss = onDismiss
     )
-
 }
 
 @Composable
 fun ErrorDialog(
     errorMessage: String?,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     InfoDialog(
         title = "Error",
@@ -79,5 +75,4 @@ fun ErrorDialog(
         onApprove = onDismiss,
         onDismiss = onDismiss
     )
-
 }
