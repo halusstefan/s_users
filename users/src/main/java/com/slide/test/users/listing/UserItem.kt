@@ -36,7 +36,7 @@ import com.slide.test.users.model.UserUI
 @Composable
 fun UserItem(
     userUI: UserUI,
-    onClick: () -> Unit,
+    onClick: (UserUI) -> Unit,
     onLongTap: (UserUI) -> Unit,
     modifier: Modifier = Modifier,
     itemSeparation: Dp = 16.dp
@@ -46,16 +46,18 @@ fun UserItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .clickable { onClick() }
             .padding(vertical = itemSeparation)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onLongTap(userUI)
+                    },
+                    onTap = {
+                        onClick(userUI)
                     }
                 )
-            }
+            },
     ) {
         GenderIcon(userUI.gender)
         Spacer(modifier = Modifier.width(16.dp))

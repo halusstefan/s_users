@@ -1,12 +1,26 @@
 package com.slide.test.users.listing
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.PersonAdd
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,7 +53,8 @@ fun UsersRoute(
     userDeleteResult: MutableLiveData<Boolean> = MutableLiveData(),
     viewModel: UsersViewModel = hiltViewModel(),
     navigateToDelete: (Long, String) -> Unit = { _, _ -> },
-    navigateToCreate: () -> Unit = {}
+    navigateToCreate: () -> Unit = {},
+    navigateToDetails: (Long) -> Unit = {},
 ) {
     val viewState by viewModel.observableState.subscribeAsState(viewModel.initialState)
 
@@ -56,9 +71,9 @@ fun UsersRoute(
         modifier = modifier,
         viewState = viewState,
         onDeleteIntent = { userUI -> navigateToDelete(userUI.id, userUI.name) },
+        onUserClick = { userUI -> navigateToDetails(userUI.id) },
         onCreateIntent = navigateToCreate,
-        onErrorAcknowledged = { viewModel.dispatch(Action.LoadUserList) }
-    )
+        onErrorAcknowledged = { viewModel.dispatch(Action.LoadUserList) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,6 +82,7 @@ fun UsersScreen(
     modifier: Modifier = Modifier,
     viewState: State,
     onDeleteIntent: (UserUI) -> Unit = {},
+    onUserClick: (UserUI) -> Unit = {},
     onCreateIntent: () -> Unit,
     onErrorAcknowledged: () -> Unit = {}
 ) {
@@ -74,8 +90,7 @@ fun UsersScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier.padding(16.dp),
-                onClick = onCreateIntent
+                modifier = Modifier.padding(16.dp), onClick = onCreateIntent
             ) {
                 Icon(
                     imageVector = Icons.TwoTone.PersonAdd,
@@ -84,13 +99,19 @@ fun UsersScreen(
                     modifier = Modifier
                 )
             }
-        }
-    ) {
+        }) {
         when {
             viewState.isLoading -> LoadingUsers()
             viewState.isEmpty -> EmptyUsers()
-            viewState.errorMessage != null -> ErrorDialog(errorMessage = viewState.errorMessage, onErrorAcknowledged)
-            else -> UserList(modifier, viewState.userList, onDeleteIntent = onDeleteIntent)
+            viewState.errorMessage != null -> ErrorDialog(
+                errorMessage = viewState.errorMessage, onErrorAcknowledged
+            )
+
+            else -> UserList(
+                modifier, viewState.userList,
+                onDeleteIntent = onDeleteIntent,
+                onUserClick = onUserClick,
+            )
         }
     }
 }
@@ -98,22 +119,23 @@ fun UsersScreen(
 
 @Composable
 fun UserList(
-    modifier: Modifier, userList: List<UserUI>,
-    onDeleteIntent: (UserUI) -> Unit
+    modifier: Modifier,
+    userList: List<UserUI>,
+    onDeleteIntent: (UserUI) -> Unit,
+    onUserClick: (UserUI) -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 3 else 1
     LazyVerticalGrid(
-        columns = GridCells.Fixed(columns),
-        modifier = modifier.padding(horizontal = 16.dp)
+        columns = GridCells.Fixed(columns), modifier = modifier.padding(horizontal = 16.dp)
 
     ) {
         userList.forEach { userUI ->
             item {
                 UserItem(
                     userUI = userUI,
-                    onClick = { },
-                    onLongTap = { onDeleteIntent(userUI) }
+                    onClick = onUserClick,
+                    onLongTap = onDeleteIntent,
                 )
             }
         }
@@ -151,8 +173,7 @@ fun EmptyUsers() {
 
 @Composable
 fun ErrorDialog(
-    errorMessage: String?,
-    onDismiss: () -> Unit
+    errorMessage: String?, onDismiss: () -> Unit
 ) {
     InfoDialog(
         title = "Error",
@@ -169,29 +190,84 @@ fun ErrorDialog(
 @Composable
 fun UsersScreenPreview() {
     val userList = listOf(
-        UserUI(10, "name", "name@email.com", Gender.MALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.MALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
     )
     SliideTestTheme {
-        UsersScreen(modifier = Modifier, viewState = State(userList = userList), { }, {})
+        UsersScreen(modifier = Modifier, viewState = State(userList = userList), { }, {}, {})
     }
 }
 
 @Preview(
-    showBackground = true,
-    device = Devices.TABLET, widthDp = 720, heightDp = 360
+    showBackground = true, device = Devices.TABLET, widthDp = 720, heightDp = 360
 )
 @Composable
 fun UsersScreenLandScapePreview() {
     val userList = listOf(
-        UserUI(10, "name", "name@email.com", Gender.MALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
-        UserUI(10, "name", "name@email.com", Gender.FEMALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.MALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
+        UserUI(
+            10,
+            "name",
+            "name@email.com",
+            Gender.FEMALE,
+            UserStatus.INACTIVE,
+            creationTime = "00:00:02"
+        ),
     )
     SliideTestTheme {
-        UsersScreen(modifier = Modifier, viewState = State(userList = userList), { }, { })
+        UsersScreen(modifier = Modifier, viewState = State(userList = userList), { }, { }, {})
     }
 }
