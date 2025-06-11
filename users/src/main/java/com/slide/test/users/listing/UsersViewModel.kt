@@ -1,6 +1,7 @@
 package com.slide.test.users.listing
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.slide.test.core.Result
 import com.slide.test.core.TimeFormatter
 import com.slide.test.core.map
@@ -14,6 +15,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**

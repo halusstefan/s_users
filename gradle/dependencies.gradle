@@ -35,7 +35,8 @@ ext.versions = [
         composeRuntimeLivedata  : '1.2.0-beta02',
         composeCustomView       : '1.2.0-alpha01',
         composePoolingContainer : '1.0.0-beta02',
-        androidxCoreTest        : '2.1.0'
+        androidxCoreTest        : '2.1.0',
+        coroutines              : '1.6.4'
 
 ]
 
@@ -71,8 +72,10 @@ def navigation = [
 ]
 
 def kotlin = [
-        stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
-        reflect: "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
+        stdlib           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+        reflect          : "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin",
+        coroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
+        coroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
 ]
 
 def test = [

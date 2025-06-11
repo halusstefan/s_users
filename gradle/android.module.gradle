@@ -38,6 +38,9 @@ dependencies {
     implementation deps.rxJava3.reactiveNetwork
     implementation deps.rxJava3.rxRelay
 
+    implementation deps.kotlin.coroutinesCore
+    implementation deps.kotlin.coroutinesAndroid
+
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.mockitoInline

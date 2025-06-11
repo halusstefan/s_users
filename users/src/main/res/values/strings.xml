@@ -18,4 +18,7 @@
     <string name="user_create_gender_hint">Gender</string>
     <string name="user_create_cancel_button">Cancel</string>
     <string name="user_create_save_button">Save</string>
+
+    <string name="loading_user_posts">Loading user posts</string>
+    <string name="back">Back</string>
 </resources>

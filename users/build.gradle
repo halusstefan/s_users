@@ -1,2 +1,7 @@
 apply from: '../gradle/app.feature.module.gradle'
 apply from: '../gradle/compose.config.gradle'
+
+
+dependencies {
+    implementation project(':repository')
+}

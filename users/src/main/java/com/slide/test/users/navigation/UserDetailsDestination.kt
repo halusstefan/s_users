@@ -3,7 +3,6 @@ package com.slide.test.users.navigation
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.slide.test.core_ui.navigation.destination.NavDestination
-import com.slide.test.users.navigation.UserDeleteDestination.Input
 import com.slide.test.users.navigation.UserDeleteDestination.Input.userIdArg
 
 /**
@@ -23,8 +22,12 @@ object UserDetailsDestination : NavDestination {
         }
     )
 
-    fun createRoute(userId: Long) : String {
+    fun createRoute(userId: Long): String {
         return "${routeName}/$userId"
+    }
+
+    object Input {
+        const val userIdArg: String = "userIdArg"
     }
 
 }
