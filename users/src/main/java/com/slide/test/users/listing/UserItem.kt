@@ -1,9 +1,14 @@
 package com.slide.test.users.listing
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Female
@@ -17,8 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +36,7 @@ import com.slide.test.users.model.UserUI
 /**
  * Created by Stefan Halus on 20 May 2022
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserItem(
     userUI: UserUI,
@@ -41,23 +45,11 @@ fun UserItem(
     modifier: Modifier = Modifier,
     itemSeparation: Dp = 16.dp
 ) {
-    val haptic = LocalHapticFeedback.current
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .padding(vertical = itemSeparation)
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        onLongTap(userUI)
-                    },
-                    onTap = {
-                        onClick(userUI)
-                    }
-                )
-            },
+            .combinedClickable(onClick = { onClick(userUI) }, onLongClick = { onLongTap(userUI) })
     ) {
         GenderIcon(userUI.gender)
         Spacer(modifier = Modifier.width(16.dp))
@@ -117,7 +109,14 @@ private fun UserCardPreview() {
     SliideTestTheme {
         Surface {
             UserItem(
-                UserUI(10, "name", "name@email.com", Gender.MALE, UserStatus.INACTIVE, creationTime = "00:00:02"),
+                UserUI(
+                    10,
+                    "name",
+                    "name@email.com",
+                    Gender.MALE,
+                    UserStatus.INACTIVE,
+                    creationTime = "00:00:02"
+                ),
                 onClick = { },
                 onLongTap = { }
             )
