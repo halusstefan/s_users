@@ -1,68 +1,52 @@
 package com.slide.test.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
+// Light Theme Reference Colors
+val light_backgroundPrimary = Color(0xFFFFFFFF)
+val light_backgroundSecondary = Color(0xFFEFF2F7)
+val light_backgroundTertiaryAvatar = Color(0xFFC1C8D7)
 
-val Blue10 = Color(0xFF001F29)
-val Blue20 = Color(0xFF003544)
-val Blue30 = Color(0xFF004D61)
-val Blue40 = Color(0xFF006781)
-val Blue80 = Color(0xFF5DD4FB)
-val Blue90 = Color(0xFFB5EAFF)
-val Blue95 = Color(0xFFDCF5FF)
-val DarkGreen10 = Color(0xFF0D1F12)
-val DarkGreen20 = Color(0xFF223526)
-val DarkGreen30 = Color(0xFF394B3C)
-val DarkGreen40 = Color(0xFF4F6352)
-val DarkGreen80 = Color(0xFFB7CCB8)
-val DarkGreen90 = Color(0xFFD3E8D3)
-val DarkGreenGray10 = Color(0xFF1A1C1A)
-val DarkGreenGray90 = Color(0xFFE2E3DE)
-val DarkGreenGray95 = Color(0xFFF0F1EC)
-val DarkGreenGray99 = Color(0xFFFBFDF7)
-val DarkPurpleGray10 = Color(0xFF201A1B)
-val DarkPurpleGray90 = Color(0xFFECDFE0)
-val DarkPurpleGray95 = Color(0xFFFAEEEF)
-val DarkPurpleGray99 = Color(0xFFFCFCFC)
-val Green10 = Color(0xFF00210B)
-val Green20 = Color(0xFF003919)
-val Green30 = Color(0xFF005227)
-val Green40 = Color(0xFF006D36)
-val Green80 = Color(0xFF0EE37C)
-val Green90 = Color(0xFF5AFF9D)
-val GreenGray30 = Color(0xFF414941)
-val GreenGray50 = Color(0xFF727971)
-val GreenGray60 = Color(0xFF8B938A)
-val GreenGray80 = Color(0xFFC1C9BF)
-val GreenGray90 = Color(0xFFDDE5DB)
-val Orange10 = Color(0xFF390C00)
-val Orange20 = Color(0xFF5D1900)
-val Orange30 = Color(0xFF812800)
-val Orange40 = Color(0xFFA23F16)
-val Orange80 = Color(0xFFFFB599)
-val Orange90 = Color(0xFFFFDBCE)
-val Orange95 = Color(0xFFFFEDE6)
-val Purple10 = Color(0xFF36003D)
-val Purple20 = Color(0xFF560A5E)
-val Purple30 = Color(0xFF702776)
-val Purple40 = Color(0xFF8C4190)
-val Purple80 = Color(0xFFFFA8FF)
-val Purple90 = Color(0xFFFFD5FC)
-val Purple95 = Color(0xFFFFEBFB)
-val PurpleGray30 = Color(0xFF4E444C)
-val PurpleGray50 = Color(0xFF7F747C)
-val PurpleGray60 = Color(0xFF998D96)
-val PurpleGray80 = Color(0xFFD0C2CC)
-val PurpleGray90 = Color(0xFFEDDEE8)
-val Red10 = Color(0xFF410001)
-val Red20 = Color(0xFF680003)
-val Red30 = Color(0xFF930006)
-val Red40 = Color(0xFFBA1B1B)
-val Red80 = Color(0xFFFFB4A9)
-val Red90 = Color(0xFFFFDAD4)
-val Teal10 = Color(0xFF001F26)
-val Teal20 = Color(0xFF02363F)
-val Teal30 = Color(0xFF214D56)
-val Teal40 = Color(0xFF3A656F)
-val Teal80 = Color(0xFFA2CED9)
-val Teal90 = Color(0xFFBEEAF6)
-val Grey10 = Color(0x11BEEAF6)
+val light_textPrimary = Color(0xFF161F28)
+val light_textSecondary = Color(0xFF717E99)
+
+// --- Placeholder Brand Colors (REPLACE WITH YOUR ACTUAL BRAND COLORS) ---
+val md_theme_light_primary = Color(0xFF161F28) // Placeholder Blue
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFC7E7FF)
+val md_theme_light_onPrimaryContainer = Color(0xFF001E2E)
+
+val md_theme_light_secondary = Color(0xFFF7F8FB) // Placeholder Grayish Blue
+val md_theme_light_onSecondary = Color(0xFF717E99)
+
+val md_theme_light_tertiary = Color(0xFF625A7C) // Placeholder Purple/Gray
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFE8DDFF)
+val md_theme_light_onTertiaryContainer = Color(0xFF1E1735)
+
+// --- Standard Error Colors ---
+val md_theme_light_error = Color(0xFFBA1A1A)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_errorContainer = Color(0xFFFFDAD6)
+val md_theme_light_onErrorContainer = Color(0xFF410002)
+
+// --- Dark Theme Placeholder Brand Colors (REPLACE/ADJUST) ---
+val md_theme_dark_primary = Color(0xFF8ACEFF) // Lighter version of light primary
+val md_theme_dark_onPrimary = Color(0xFF00344C)
+val md_theme_dark_primaryContainer = Color(0xFF004C6D)
+val md_theme_dark_onPrimaryContainer = Color(0xFFC7E7FF)
+
+val md_theme_dark_secondary = Color(0xFFB6C9D8) // Lighter version of light secondary
+val md_theme_dark_onSecondary = Color(0xFF21333F)
+val md_theme_dark_secondaryContainer = Color(0xFF384956)
+val md_theme_dark_onSecondaryContainer = Color(0xFFD2E5F5)
+
+val md_theme_dark_tertiary = Color(0xFFCCC1E9) // Lighter version of light tertiary
+val md_theme_dark_onTertiary = Color(0xFF332C4B)
+val md_theme_dark_tertiaryContainer = Color(0xFF4A4363)
+val md_theme_dark_onTertiaryContainer = Color(0xFFE8DDFF)
+
+// --- Standard Dark Error Colors ---
+val md_theme_dark_error = Color(0xFFFFB4AB)
+val md_theme_dark_onError = Color(0xFF690005)
+val md_theme_dark_errorContainer = Color(0xFF93000A)
+val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)

@@ -49,7 +49,7 @@ fun InitialsAvatar(
         Text(
             text = initials,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }

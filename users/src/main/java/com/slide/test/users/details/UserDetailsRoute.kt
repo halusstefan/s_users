@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -100,14 +101,14 @@ fun UserDetails(
                 .padding(top = 10.dp),
             text = state.userEmail,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(Modifier.height(16.dp))
         PostArea(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .background(MaterialTheme.colorScheme.secondary)
                 .padding(24.dp),
             postViewState = state.postViewState,
         )
@@ -120,7 +121,13 @@ fun PostArea(
     modifier: Modifier = Modifier
 ) {
     when (postViewState) {
-        is PostViewState.Error -> Text("Loading post failed", modifier)
+        is PostViewState.Error -> Text(
+            "Loading post failed",
+            modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center,
+        )
+
         PostViewState.Loading -> Loading(modifier)
         is PostViewState.Success -> PostSuccess(postViewState.post, modifier)
     }
@@ -133,13 +140,13 @@ fun PostSuccess(
 ) {
     if (post == null) {
         Text(
-            modifier = modifier,
+            modifier = modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
             text = "No posts available"
         )
     } else {
         Column(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.secondaryContainer),
+            modifier = modifier,
         ) {
             Text(
                 text = post.title,

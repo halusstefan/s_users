@@ -13,59 +13,77 @@ import androidx.core.view.ViewCompat
 /**
  * Light default theme color scheme
  */
-private val LightColorScheme = lightColorScheme(
-    primary = Color.White,
-    onPrimary = Color.Black,
-    primaryContainer = Purple90,
-    onPrimaryContainer = Purple10,
-    secondary = Orange40,
-    onSecondary = Color.White,
-    secondaryContainer = Orange90,
-    onSecondaryContainer = Orange10,
-    tertiary = Blue40,
-    onTertiary = Color.White,
-    tertiaryContainer = Blue90,
-    onTertiaryContainer = Blue10,
-    error = Red40,
-    onError = Color.White,
-    errorContainer = Red90,
-    onErrorContainer = Red10,
-    background = DarkPurpleGray99,
-    onBackground = DarkPurpleGray10,
-    surface = DarkPurpleGray99,
-    onSurface = DarkPurpleGray10,
-    surfaceVariant = PurpleGray90,
-    onSurfaceVariant = PurpleGray30,
-    outline = PurpleGray50
+
+val LightColorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    secondaryContainer = light_backgroundTertiaryAvatar,
+    onSecondaryContainer = md_theme_light_onPrimary,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    tertiaryContainer = md_theme_light_tertiaryContainer,
+    onTertiaryContainer = md_theme_light_onTertiaryContainer,
+    error = md_theme_light_error,
+    onError = md_theme_light_onError,
+    errorContainer = md_theme_light_errorContainer,
+    onErrorContainer = md_theme_light_onErrorContainer,
+
+    background = light_backgroundPrimary,              // Your backgroundPrimary
+    onBackground = light_textPrimary,                  // Your textPrimary
+
+    surface = light_backgroundPrimary,                 // Your backgroundPrimary for main surfaces
+    onSurface = light_textPrimary,                     // Your textPrimary on main surfaces
+
+    surfaceVariant = light_backgroundSecondary,        // Your backgroundSecondary for variant surfaces
+    onSurfaceVariant = light_textSecondary,            // Your textSecondary for variant surfaces
+
+    outline = light_textSecondary, // Often a muted text color or border
 )
 
-/**
- * Dark default theme color scheme
- */
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    onPrimary = Purple20,
-    primaryContainer = Purple30,
-    onPrimaryContainer = Purple90,
-    secondary = Orange80,
-    onSecondary = Orange20,
-    secondaryContainer = Orange30,
-    onSecondaryContainer = Orange90,
-    tertiary = Blue80,
-    onTertiary = Blue20,
-    tertiaryContainer = Blue30,
-    onTertiaryContainer = Blue90,
-    error = Red80,
-    onError = Red20,
-    errorContainer = Red30,
-    onErrorContainer = Red90,
-    background = DarkPurpleGray10,
-    onBackground = DarkPurpleGray90,
-    surface = DarkPurpleGray10,
-    onSurface = DarkPurpleGray90,
-    surfaceVariant = PurpleGray30,
-    onSurfaceVariant = PurpleGray80,
-    outline = PurpleGray60
+val dark_background = Color(0xFF161F28) // Derived from your light_textPrimary
+val dark_onBackground = Color(0xFFE8EAED) // Light gray for text, similar to your light_backgroundSecondary
+
+val dark_surface = Color(0xFF161F28)   // Main surface
+val dark_onSurface = Color(0xFFE8EAED)  // Text on main surface
+
+val dark_surfaceVariant = Color(0xFF2C3A46)
+val dark_onSurfaceVariant = Color(0xFFB0BCCC) // Derived from light_textSecondary
+
+val dark_secondaryContainer = Color(0xFF3E4A59)
+val dark_onSecondaryContainer = Color(0xFFDCE0E8)
+
+val DarkColorScheme = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    secondary = md_theme_dark_secondary,
+    onSecondary = md_theme_dark_onSecondary,
+    secondaryContainer = dark_secondaryContainer, // Using adapted avatar bg
+    onSecondaryContainer = dark_onSecondaryContainer,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    tertiaryContainer = md_theme_dark_tertiaryContainer,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+    error = md_theme_dark_error,
+    onError = md_theme_dark_onError,
+    errorContainer = md_theme_dark_errorContainer,
+    onErrorContainer = md_theme_dark_onErrorContainer,
+
+    background = dark_background,
+    onBackground = dark_onBackground,
+
+    surface = dark_surface,
+    onSurface = dark_onSurface,
+
+    surfaceVariant = dark_surfaceVariant,
+    onSurfaceVariant = dark_onSurfaceVariant, // Your light_textEmail could be adapted here too
+
+    outline = dark_onSurfaceVariant, // Often a muted text color or border
 )
 
 @Composable
@@ -80,7 +98,7 @@ fun SliideTestTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
+            (view.context as Activity).window.statusBarColor = colorScheme.background.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !darkTheme
         }
     }
