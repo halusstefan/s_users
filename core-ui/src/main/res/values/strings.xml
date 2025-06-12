@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SliideTest</string>
     <string name="back">Back</string>
+    <string name="user_profile_content_description">User Profile</string>
 </resources>

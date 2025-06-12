@@ -3,6 +3,7 @@ package com.slide.test.users.details
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.slide.test.core_ui.component.LoadingWheel
+import com.slide.test.core_ui.component.RemoteAvatar
 import com.slide.test.core_ui.component.TopAppBar
 import com.slide.test.users.R.string
 
@@ -71,12 +73,20 @@ fun UserDetails(
     state: UserDetailsViewState.Success,
     modifier: Modifier = Modifier,
 ) {
-    Text(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(16.dp),
-        text = state.toString()
-    )
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        RemoteAvatar("https://picsum.photos/200/200")
+        Text(
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .padding(16.dp),
+            text = state.toString()
+        )
+    }
 }
 
 @Composable

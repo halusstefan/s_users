@@ -1,2 +1,8 @@
 apply from: '../gradle/android.module.gradle'
 apply from: '../gradle/compose.config.gradle'
+
+dependencies {
+    implementation deps.glide.core
+    kapt deps.glide.compiler
+    implementation deps.glide.compose
+}
