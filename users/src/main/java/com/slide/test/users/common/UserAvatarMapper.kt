@@ -9,15 +9,16 @@ import javax.inject.Inject
  */
 
 interface UserAvatarFactory {
-    fun create(user: UserModel): UserAvatar
+    fun create(userId: Long, userName: String): UserAvatar
 }
 
 class UserAvatarFactoryImplementation @Inject constructor() : UserAvatarFactory {
-    override fun create(user: UserModel): UserAvatar {
-        return if (user.id % 2 == 0L) {
-            UserAvatar.UserInitials(generateInitials(user.name))
+    override fun create(userId: Long, userName: String): UserAvatar {
+        return if (userId % 2 == 0L) {
+            UserAvatar.UserInitials(generateInitials(userName))
         } else {
-            UserAvatar.UserImage("https://picsum.photos/200/200")
+            val picId = userId % 1000
+            UserAvatar.UserImage("https://picsum.photos/id/$picId/200/200")
         }
     }
 

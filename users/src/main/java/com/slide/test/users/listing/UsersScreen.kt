@@ -45,6 +45,7 @@ import com.slide.test.core_ui.theme.SliideTestTheme
 import com.slide.test.usecase.users.model.Gender
 import com.slide.test.usecase.users.model.UserStatus
 import com.slide.test.users.R.string
+import com.slide.test.users.details.UserAvatar
 import com.slide.test.users.model.UserUI
 
 /**
@@ -204,7 +205,7 @@ fun UsersScreenPreview() {
             10,
             "name",
             "name@email.com",
-            Gender.MALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -212,7 +213,7 @@ fun UsersScreenPreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -232,7 +233,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.MALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -240,7 +241,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -248,7 +249,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -256,7 +257,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -264,7 +265,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),
@@ -272,7 +273,7 @@ fun UsersScreenLandScapePreview() {
             10,
             "name",
             "name@email.com",
-            Gender.FEMALE,
+            UserAvatar.UserInitials("SH"),
             UserStatus.INACTIVE,
             creationTime = "00:00:02"
         ),

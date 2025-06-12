@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -31,6 +30,7 @@ import com.slide.test.core_ui.theme.SliideTestTheme
 import com.slide.test.usecase.users.model.Gender
 import com.slide.test.usecase.users.model.UserStatus
 import com.slide.test.users.R
+import com.slide.test.users.details.UserAvatar
 import com.slide.test.users.model.UserUI
 
 /**
@@ -51,7 +51,7 @@ fun UserItem(
             .padding(vertical = itemSeparation)
             .combinedClickable(onClick = { onClick(userUI) }, onLongClick = { onLongTap(userUI) })
     ) {
-        GenderIcon(userUI.gender)
+        com.slide.test.users.common.UserAvatar(userUI.avatar)
         Spacer(modifier = Modifier.width(16.dp))
         UserContent(userUI)
     }
@@ -113,7 +113,7 @@ private fun UserCardPreview() {
                     10,
                     "name",
                     "name@email.com",
-                    Gender.MALE,
+                    UserAvatar.UserInitials("SH"),
                     UserStatus.INACTIVE,
                     creationTime = "00:00:02"
                 ),
@@ -134,7 +134,7 @@ private fun UserLongNameCardPreview() {
                     10,
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                     "name@email.com",
-                    Gender.MALE,
+                    UserAvatar.UserInitials("SH"),
                     UserStatus.INACTIVE,
                     creationTime = "00:00:02"
                 ),

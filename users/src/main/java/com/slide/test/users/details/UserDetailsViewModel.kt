@@ -52,7 +52,7 @@ class UserDetailsViewModel @Inject constructor(
 
         return UserDetailsViewState.Success(
             userName = user.name,
-            userImage = userAvatarFactory.create(user),
+            userImage = userAvatarFactory.create(user.id, user.name),
             userEmail = user.email,
             postViewState = result.toPostViewState(),
         )

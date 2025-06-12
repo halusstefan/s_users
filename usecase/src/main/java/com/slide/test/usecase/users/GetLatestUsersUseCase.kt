@@ -1,6 +1,5 @@
 package com.slide.test.usecase.users
 
-import com.slide.test.core.PageMetadata
 import com.slide.test.core.Result
 import com.slide.test.core.map
 import com.slide.test.repository.UsersRepository
@@ -10,7 +9,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.time.ExperimentalTime
 
 /**
  * Created by Stefan Halus on 18 May 2022
@@ -25,18 +23,6 @@ internal class GetLatestUsersUseCaseImplementation @Inject constructor(
 ) : GetLatestUsersUseCase {
 
     override fun execute(): Observable<Result<List<User>>> {
-        return usersRepository.getUsers(null)
-            .flatMap { usersResource ->
-                when (usersResource) {
-                    is Result.Success -> getLastPage(usersResource.data.meta)
-                    is Result.Error -> Observable.just(usersResource)
-                    is Result.Loading -> Observable.just(Result.Loading)
-                }
-            }
-    }
-
-    private fun getLastPage(metadata: PageMetadata): Observable<Result<List<User>>> {
-        val lastPage = metadata.pages
         return usersRepository.getUsers(null)
             .switchMap { result ->
                 Observable.interval(1, TimeUnit.SECONDS)

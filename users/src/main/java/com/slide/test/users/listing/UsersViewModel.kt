@@ -1,21 +1,17 @@
 package com.slide.test.users.listing
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.slide.test.core.Result
 import com.slide.test.core.TimeFormatter
 import com.slide.test.core.map
 import com.slide.test.core_ui.mvi.BaseViewModel
 import com.slide.test.core_ui.mvi.Reducer
-import com.slide.test.usecase.users.DeleteUserUseCase
 import com.slide.test.usecase.users.GetLatestUsersUseCase
+import com.slide.test.users.common.UserAvatarFactory
 import com.slide.test.users.model.toUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableSource
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -24,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val getLatestUsersUseCase: GetLatestUsersUseCase,
-    private val timeFormatter: TimeFormatter
+    private val timeFormatter: TimeFormatter,
+    private val userAvatarFactory: UserAvatarFactory,
 ) : BaseViewModel<Action, State>() {
 
     override val initialState: State = State(isIdle = true)
@@ -37,14 +34,17 @@ class UsersViewModel @Inject constructor(
                 errorMessage = null,
                 userToDelete = null
             )
+
             is Change.UserList -> state.copy(
                 isLoading = false,
                 userList = change.userList
             )
+
             is Change.Error -> state.copy(
                 isLoading = false,
                 errorMessage = change.throwable?.localizedMessage
             )
+
             is Change.EmptyUserList -> state.copy(
                 isLoading = false,
                 isEmpty = true
@@ -62,7 +62,8 @@ class UsersViewModel @Inject constructor(
             userListChanges()
         )
 
-        disposables.add(Observable.merge(allChanges)
+        disposables.add(
+            Observable.merge(allChanges)
             .scan(initialState, reducer)
             .filter { !it.isIdle }
             .distinctUntilChanged()
@@ -76,7 +77,7 @@ class UsersViewModel @Inject constructor(
                 getLatestUsersUseCase.execute()
                     .map { result ->
                         result.map { userList ->
-                            userList.map { user -> user.toUI(timeFormatter) }
+                            userList.map { user -> user.toUI(timeFormatter, userAvatarFactory) }
                         }
                     }
                     .map<Change> {
