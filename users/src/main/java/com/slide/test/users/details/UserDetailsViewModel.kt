@@ -8,6 +8,7 @@ import com.slide.test.repository.UsersRepository
 import com.slide.test.repository.model.PostModel
 import com.slide.test.repository.model.UserModel
 import com.slide.test.usecase.users.model.User
+import com.slide.test.users.common.UserAvatarFactory
 import com.slide.test.users.navigation.UserDetailsDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class UserDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UsersRepository,
+    private val userAvatarFactory: UserAvatarFactory,
 ) : ViewModel() {
 
     val userId: Long = checkNotNull(
@@ -50,29 +52,12 @@ class UserDetailsViewModel @Inject constructor(
 
         return UserDetailsViewState.Success(
             userName = user.name,
-            userImage = getUserAvatar(user),
+            userImage = userAvatarFactory.create(user),
             userEmail = user.email,
             postViewState = result.toPostViewState(),
         )
     }
 
-    private fun getUserAvatar(user: UserModel): UserAvatar {
-        if(user.id %2 == 0L) {
-            return UserAvatar.UserInitials(generateInitials(user.name))
-        } else {
-            return UserAvatar.UserImage("https://picsum.photos/200/200")
-        }
-    }
-    private fun generateInitials(name: String): String {
-        if (name.isBlank()) return ""
-        val parts = name.split(" ").filter { it.isNotBlank() }
-        return when {
-            parts.size >= 2 -> "${parts[0].first()}${parts[1].first()}"
-            parts.isNotEmpty() -> "${parts[0].first()}"
-            else -> ""
-        }.uppercase()
-
-    }
 }
 
 private fun Result<List<PostModel>>.toPostViewState(): PostViewState {
