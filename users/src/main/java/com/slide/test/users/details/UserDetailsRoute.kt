@@ -1,27 +1,32 @@
 package com.slide.test.users.details
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.slide.test.core_ui.component.LoadingWheel
 import com.slide.test.core_ui.component.TopAppBar
+import com.slide.test.users.R
 import com.slide.test.users.R.string
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -39,8 +44,12 @@ fun UserDetailsRoute(
                 navigationIcon = {
                     IconButton(onClick = navigateBack) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(string.back)
+                            painter = painterResource(id = R.drawable.back_arrow),
+                            contentDescription = stringResource(string.back),
+                            modifier = Modifier
+                                .width(12.dp)
+                                .height(20.5.dp)
+                                .rotate(180f)
                         )
                     }
                 })
@@ -79,7 +88,9 @@ fun UserDetails(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(16.dp),
         text = state.toString()
     )
 }
