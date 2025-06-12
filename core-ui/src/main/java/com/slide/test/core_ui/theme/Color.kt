@@ -9,7 +9,6 @@ val light_backgroundTertiaryAvatar = Color(0xFFC1C8D7)
 val light_textPrimary = Color(0xFF161F28)
 val light_textSecondary = Color(0xFF717E99)
 
-// --- Placeholder Brand Colors (REPLACE WITH YOUR ACTUAL BRAND COLORS) ---
 val md_theme_light_primary = Color(0xFF161F28) // Placeholder Blue
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFC7E7FF)
@@ -35,8 +34,8 @@ val md_theme_dark_onPrimary = Color(0xFF00344C)
 val md_theme_dark_primaryContainer = Color(0xFF004C6D)
 val md_theme_dark_onPrimaryContainer = Color(0xFFC7E7FF)
 
-val md_theme_dark_secondary = Color(0xFFB6C9D8) // Lighter version of light secondary
-val md_theme_dark_onSecondary = Color(0xFF21333F)
+val md_theme_dark_secondary = Color(0xFF333641) // Lighter version of light secondary
+val md_theme_dark_onSecondary = Color(0xFF5281A1)
 val md_theme_dark_secondaryContainer = Color(0xFF384956)
 val md_theme_dark_onSecondaryContainer = Color(0xFFD2E5F5)
 
@@ -50,3 +49,15 @@ val md_theme_dark_error = Color(0xFFFFB4AB)
 val md_theme_dark_onError = Color(0xFF690005)
 val md_theme_dark_errorContainer = Color(0xFF93000A)
 val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
+
+val dark_background = Color(0xFF161F28) // Derived from your light_textPrimary
+val dark_onBackground = Color(0xFFE8EAED) // Light gray for text, similar to your light_backgroundSecondary
+
+val dark_surface = Color(0xFF161F28)   // Main surface
+val dark_onSurface = Color(0xFFE8EAED)  // Text on main surface
+
+val dark_surfaceVariant = Color(0xFF2C3A46)
+val dark_onSurfaceVariant = Color(0xFFB0BCCC) // Derived from light_textSecondary
+
+val dark_secondaryContainer = Color(0xFF3E4A59)
+val dark_onSecondaryContainer = Color(0xFFDCE0E8)

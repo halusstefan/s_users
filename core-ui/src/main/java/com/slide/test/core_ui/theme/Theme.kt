@@ -44,18 +44,6 @@ val LightColorScheme = lightColorScheme(
     outline = light_textSecondary, // Often a muted text color or border
 )
 
-val dark_background = Color(0xFF161F28) // Derived from your light_textPrimary
-val dark_onBackground = Color(0xFFE8EAED) // Light gray for text, similar to your light_backgroundSecondary
-
-val dark_surface = Color(0xFF161F28)   // Main surface
-val dark_onSurface = Color(0xFFE8EAED)  // Text on main surface
-
-val dark_surfaceVariant = Color(0xFF2C3A46)
-val dark_onSurfaceVariant = Color(0xFFB0BCCC) // Derived from light_textSecondary
-
-val dark_secondaryContainer = Color(0xFF3E4A59)
-val dark_onSecondaryContainer = Color(0xFFDCE0E8)
-
 val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,

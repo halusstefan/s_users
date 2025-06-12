@@ -123,10 +123,11 @@ fun PostArea(
 ) {
     when (postViewState) {
         is PostViewState.Error -> Text(
-            "Loading post failed",
-            modifier
+            text = stringResource(string.loading_user_posts_error),
+            modifier= modifier
                 .fillMaxWidth(),
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.error
         )
 
         PostViewState.Loading -> Loading(modifier)
@@ -191,7 +192,7 @@ private fun Error(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UserDetailsPreview() {
     UserDetails(
@@ -209,7 +210,7 @@ fun UserDetailsPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UserDetailsLoadingPreview() {
     UserDetails(
@@ -222,7 +223,7 @@ fun UserDetailsLoadingPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UserDetailsErrorPreview() {
     UserDetails(
@@ -236,7 +237,7 @@ fun UserDetailsErrorPreview() {
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UserDetailsNoPostPreview() {
     UserDetails(
