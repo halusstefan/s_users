@@ -42,7 +42,6 @@ import com.slide.test.core_ui.component.InfoDialog
 import com.slide.test.core_ui.component.LoadingWheel
 import com.slide.test.core_ui.component.TopAppBar
 import com.slide.test.core_ui.theme.SliideTestTheme
-import com.slide.test.usecase.users.model.Gender
 import com.slide.test.usecase.users.model.UserStatus
 import com.slide.test.users.R.string
 import com.slide.test.users.details.UserAvatar
@@ -140,7 +139,8 @@ fun UserList(
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 3 else 1
     LazyVerticalGrid(
-        columns = GridCells.Fixed(columns), modifier = modifier.padding(horizontal = 16.dp)
+        columns = GridCells.Fixed(columns),
+        modifier = modifier
 
     ) {
         userList.forEach { userUI ->

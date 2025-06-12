@@ -112,6 +112,7 @@ fun UserDetails(
                 .padding(24.dp),
             postViewState = state.postViewState,
         )
+        Spacer(Modifier.height(24.dp))
     }
 }
 
@@ -152,9 +153,11 @@ fun PostSuccess(
                 text = post.title,
                 style = MaterialTheme.typography.titleMedium
             )
+            Spacer(Modifier.height(10.dp))
             Text(
                 text = post.body,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondary,
             )
         }
     }

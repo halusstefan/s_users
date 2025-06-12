@@ -48,7 +48,7 @@ fun UserItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .padding(vertical = itemSeparation)
+            .padding(vertical = itemSeparation, horizontal = 16.dp)
             .combinedClickable(onClick = { onClick(userUI) }, onLongClick = { onLongTap(userUI) })
     ) {
         com.slide.test.users.common.UserAvatar(userUI.avatar)
@@ -62,7 +62,7 @@ private fun UserContent(userUI: UserUI, modifier: Modifier = Modifier) {
     Column(modifier) {
         Text(
             text = userUI.name,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.labelMedium,
             modifier = Modifier.padding(
                 vertical = if (userUI.email.isEmpty()) 0.dp else 4.dp
             )
