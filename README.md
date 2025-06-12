@@ -53,3 +53,13 @@ handling data from  multiple sources in the `UserDetailsViewModel`.
 - Loading states – show a loading indicator during API calls ✅
 - Error handling – gracefully handle API failures or no internet ✅
 - Extra: Dark theme ✅
+
+## Screenshots
+  <img src="https://github.com/user-attachments/assets/b20c64d3-8b54-4671-98c8-6f8af4e26973" width="300px">
+  <img src="https://github.com/user-attachments/assets/ad4d2016-dd25-4855-8481-ca3494cdba89" width="300px">
+  <img src="https://github.com/user-attachments/assets/0b7b621c-ad76-4625-aba2-62adabd5877d" width="300px">
+  <img src="https://github.com/user-attachments/assets/b9459e28-e316-4fb0-8cba-7decac999393" width="300px">
+  <img src="https://github.com/user-attachments/assets/edb20751-2644-49e3-9b05-073c9152761e" width="300px">
+  <img src="https://github.com/user-attachments/assets/8cfac3c3-59ff-4309-86d3-81b31db7df02" width="300px">
+  <img src="https://github.com/user-attachments/assets/18786395-709c-4c5e-b876-2b4d6fbcbd87" width="600px">
+  <img src="https://github.com/user-attachments/assets/1efd0533-9c95-4900-bca5-aa85d3be76f9" width="600px">
