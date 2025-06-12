@@ -14,8 +14,8 @@ import androidx.core.view.ViewCompat
  * Light default theme color scheme
  */
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    onPrimary = Color.White,
+    primary = Color.White,
+    onPrimary = Color.Black,
     primaryContainer = Purple90,
     onPrimaryContainer = Purple10,
     secondary = Orange40,
@@ -81,7 +81,7 @@ fun SliideTestTheme(
     if (!view.isInEditMode) {
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !darkTheme
         }
     }
 
