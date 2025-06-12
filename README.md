@@ -1,60 +1,55 @@
-# Sliide Android developer challenge
+# Notes
+This is a project that I've started in 2022, for a interview, as discussed, I've left the user
+listing functionality as it was, and added the new functionality for displaying the contact
+details based on the provided requirements document.
 
-## Congratulations, you have reached the next stage which is solving a Sliide practical test.
+## The user listing functionality
+- Uses `public-api` instead of `public/v2/` (public-api contains some extra metadata)
+- Each user items displays a timer, representing the time since the user was created. But
+  since
+  there's no `createdAt` coming from the API, I've just used the app start time instead.
+- Long tap on a user to show the Delete confirmation
+- Tap on the FAB to show the Add user Dialog
+- Both `Delete` and `Add User` functionalities are designed to be decoupled from the User
+  listing
+  screen and could be reused in other parts of the app
+- Tech stack
+    - Retrofit + OkHttp + Moshi
+    - RxJava
+    - MVI + Compose
+## The contact details functionality
+- Uses `public-api` instead of `public/v2/` (public-api contains some extra metadata)
+- Implements all the design and functional requirements stated in the requirements document
+- Tech stack
+    - Retrofit + OkHttp + Moshi
+    - Coroutines + Flow
+    - MVVM + Compose
 
-We’d like to you to write simple Android application for managing users.
+# Setup and build
+- I've used Android Studio Meerkat Feature Drop | 2024.3.2
+- Just import and run the app
 
-### Description
+# Trade-offs
+The dependencies are mostly outdated, and I tried to do the best without updating them. After 3
+years, it would have taken a lot of time figuring out the compatible dependencies and adapt the
+breaking changes in the code.
 
-When we have reviewed your test, and any accompanying documents you feel necessary, if we like what we see, we’ll invite you to join us for
-a video conversation during which we’ll ask you to go through your test, explaining any decisions that you made.
+##Example:
+For `compose-navigation`, the version I've used doesn't support type safe navigation,
+making it very hard to pass the user info (from list to detail). In order to make it work, I've
+introduced an `UsersInMemCache` that stores the users and provides a way to get the user details,
+based on the userId. The good outcome, though is that I was able to showcase the approach of
+handling data from  multiple sources in the `UserDetailsViewModel`.
 
-### Implementation
-
-For implementation we use https://gorest.co.in/ public API
-
-### Functional requirement
-
-Feel free to use whatever flare you can to show off your skills.
-
-You shouldn't spend more than 1 day on implementation, but if you need more time to show the best quality, feel free to use it. We prefer
-finished, clean, production ready implementation with unit tests, rather than half done solution.
-
-#### 1 Displaying list of users
-
-- After app is open list of users is displayed (only users from last page of the endpoint)
-- Each entry contains name, email address and creation time (relative to now)
-- Loading and error state are welcome
-
-#### 2 Adding new user
-
-- After + button is clicked pop up dialog is displayed with name and email entries
-- After confirmation and successful user creation (201 response code) item is added to the list
-
-#### 3 Removing existing user
-
-- After item long press pop up dialog is displayed with question “Are you sure you want to remove this user?“
-- After OK is clicked and user is removed (204 response code) item is deleted from the list
-
-### Technical requirements
-
-- Application must be developed in Kotlin with minimum Android SDK version of 21
-- You are free to use whatever frameworks or tools you see fit
-- Application needs to support device rotation
-- Design should follow Material design guidelines
-- RxJava or Coroutines
-- Architecture one of MVP/MVVM/MVI
-- Dependency injection with Dagger 2 or Hilt
-- Unit tests
-
-### Evaluation Criteria
-
-- You create testable code
-- You pay attention to detail
-- Code should be production ready
-
-### Deliverables
-
-- The forked version of this repo
-
-
+# Overall fulfilled requirements
+- Language: Kotlin ✅
+- UI: Jetpack Compose ✅
+- Architecture: MVVM and MVI ✅
+- Networking: Retrofit + OkHttp ✅
+- Async: Coroutines and RxJava ✅
+- Dependency injection: Hilt ✅
+- Image Loading: Glide ✅
+- Responsive UI – supports multiple screen sizes ✅
+- Loading states – show a loading indicator during API calls ✅
+- Error handling – gracefully handle API failures or no internet ✅
+- Extra: Dark theme ✅
