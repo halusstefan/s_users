@@ -3,6 +3,8 @@ package com.slide.test.repository
 import com.slide.test.core.Page
 import com.slide.test.core.Result
 import com.slide.test.core.asResult
+import com.slide.test.core.di.ApplicationCoroutineScope
+import com.slide.test.core.di.IoDispatcher
 import com.slide.test.network.service.UsersService
 import com.slide.test.repository.cache.UsersInMemCache
 import com.slide.test.repository.exceptions.UsersApiExceptionHandler
@@ -13,8 +15,9 @@ import com.slide.test.repository.model.toDto
 import com.slide.test.repository.model.toModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -41,16 +44,19 @@ interface UsersRepository {
 internal class UsersRepositoryImplementation @Inject constructor(
     private val usersService: UsersService,
     private val usersApiExceptionHandler: UsersApiExceptionHandler,
-    private val usersInMemCache: UsersInMemCache
+    private val usersInMemCache: UsersInMemCache,
+    @ApplicationCoroutineScope private val coroutineScope: CoroutineScope,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : UsersRepository {
 
     override fun getUsers(page: Long?): Observable<Result<Page<UserModel>>> {
         return usersService.fetchUsers(page)
             .map { pageDto -> pageDto.toModel() }
             .doOnSuccess {
-                GlobalScope.launch { usersInMemCache.putAll(it.data) }
+                coroutineScope.launch { usersInMemCache.putAll(it.data) }
             }
             .asResult()
+            .startWith(Single.just(Result.Loading))
     }
 
     override fun deleteUser(userId: Long): Completable {
@@ -81,7 +87,7 @@ internal class UsersRepositoryImplementation @Inject constructor(
         } catch (e: Exception) {
             emit(Result.Error(usersApiExceptionHandler.handleException(e)))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
     override suspend fun getUser(userId: Long): UserModel? {
         return usersInMemCache.get(userId)
