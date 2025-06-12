@@ -4,4 +4,9 @@ apply from: '../gradle/compose.config.gradle'
 
 dependencies {
     implementation project(':repository')
+
+    testImplementation deps.test.turbine
+    testImplementation deps.test.coroutinesTest
+
+    testImplementation deps.test.mockitoKotlin
 }

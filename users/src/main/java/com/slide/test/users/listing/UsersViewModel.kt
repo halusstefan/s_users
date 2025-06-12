@@ -89,7 +89,6 @@ class UsersViewModel @Inject constructor(
                     }
                     .defaultIfEmpty(Change.EmptyUserList)
                     .onErrorReturn { Change.Error(it) }
-                    .startWithItem(Change.Loading)
             }
     }
 }

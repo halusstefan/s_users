@@ -6,8 +6,8 @@ import com.slide.test.network.model.PostDto
  * Created by Stefan Halus on 11 Jun 2025
  */
 data class PostModel(
-    val id: Int,
-    val userId: Int,
+    val id: Long,
+    val userId: Long,
     val title: String,
     val body: String,
 )

@@ -9,7 +9,6 @@ data class User(
     val id: Long,
     val name: String,
     val email: String,
-    val gender: Gender,
     val status: UserStatus,
     val creationTime: Long
 )
@@ -19,7 +18,6 @@ fun UserModel.toUseCase(creationTime: Long): User {
         id = id,
         name = name,
         email = email,
-        gender = gender.toUseCase(),
         status = status.toUseCase(),
         creationTime = creationTime
     )

@@ -38,7 +38,8 @@ ext.versions = [
         androidxCoreTest        : '2.1.0',
         coroutines              : '1.6.4',
         glide                   : '4.13.2',
-        glideCompose            : '1.0.0-alpha.0'
+        glideCompose            : '1.0.0-alpha.0',
+        turbine                 : '0.12.1',
 ]
 
 def core = [
@@ -88,6 +89,8 @@ def test = [
         espresso          : "androidx.test.espresso:espresso-core:${versions.androidxEspresso}",
         mockitoInline     : "org.mockito:mockito-inline:${versions.mockito}",
         mockitoKotlin     : "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockito_kotlin}",
+        turbine           : "app.cash.turbine:turbine:$versions.turbine",
+        coroutinesTest    : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
 //        mockitoAndroid: "org.mockito:mockito-android:${versions.mockito}",
 //        mockServer    : "com.squareup.okhttp3:mockwebserver:${versions.mock_server}",
 //        json          : "org.json:json:${versions.json}"
