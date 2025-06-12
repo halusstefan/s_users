@@ -14,7 +14,7 @@ sealed class UserDetailsViewState {
         val userName: String,
         val userImage: UserAvatar,
         val userEmail: String,
-        val postViewState: PostViewState?,
+        val postViewState: PostViewState,
     ) : UserDetailsViewState()
 }
 

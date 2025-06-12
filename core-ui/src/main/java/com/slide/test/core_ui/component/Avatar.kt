@@ -43,13 +43,13 @@ fun InitialsAvatar(
     Box(
         modifier = modifier
             .circularAvatarModifier()
-            .background(MaterialTheme.colorScheme.tertiaryContainer),
+            .background(MaterialTheme.colorScheme.secondaryContainer),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = initials,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onTertiaryContainer
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSecondary
         )
     }
 }
