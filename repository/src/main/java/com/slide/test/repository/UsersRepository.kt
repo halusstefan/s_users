@@ -36,7 +36,7 @@ interface UsersRepository {
 
     fun createUser(createUserRequestModel: CreateUserRequestModel): Completable
 
-    fun getUserPosts(userId: Long): Flow<Result<List<PostModel>>>
+    fun getUserPost(userId: Long): Flow<Result<PostModel?>>
 
     suspend fun getUser(userId: Long): UserModel?
 }
@@ -72,14 +72,14 @@ internal class UsersRepositoryImplementation @Inject constructor(
             }
     }
 
-    override fun getUserPosts(userId: Long): Flow<Result<List<PostModel>>> = flow {
+    override fun getUserPost(userId: Long): Flow<Result<PostModel?>> = flow {
         try {
             emit(Result.Loading)
             emit(
                 Result.Success(
                     usersService.getUserPosts(userId)
                         .data
-                        .map { it.toModel() }
+                        .firstOrNull()?.toModel()
                 )
             )
         } catch (e: CancellationException) {

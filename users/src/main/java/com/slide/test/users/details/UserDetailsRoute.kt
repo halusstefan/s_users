@@ -37,6 +37,7 @@ import com.slide.test.users.common.UserAvatar
 fun UserDetailsRoute(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    userDetailsViewModel: UserDetailsViewModel = hiltViewModel(),
 ) {
     BackHandler { navigateBack() }
     Scaffold(
@@ -47,8 +48,9 @@ fun UserDetailsRoute(
                 navigateBack = navigateBack,
             )
         }) { padding ->
-
+        val state = userDetailsViewModel.viewState.collectAsState()
         UserDetailsScreen(
+            state = state.value,
             modifier = modifier
                 .fillMaxSize()
                 .padding(padding),
@@ -58,21 +60,17 @@ fun UserDetailsRoute(
 
 @Composable
 fun UserDetailsScreen(
-    userDetailsViewModel: UserDetailsViewModel = hiltViewModel(),
-    modifier: Modifier
+    state: UserDetailsViewState,
+    modifier: Modifier = Modifier,
 ) {
-
-    val state = userDetailsViewModel.viewState.collectAsState()
-
-    when (state.value) {
+    when (state) {
         is UserDetailsViewState.Loading -> Loading(modifier)
         is UserDetailsViewState.Success -> {
-            UserDetails(modifier = modifier, state = state.value as UserDetailsViewState.Success)
+            UserDetails(modifier = modifier, state = state)
         }
 
-        is UserDetailsViewState.Error -> Error(state.value as UserDetailsViewState.Error)
+        is UserDetailsViewState.Error -> Error(state)
     }
-
 }
 
 @Composable
@@ -124,7 +122,7 @@ fun PostArea(
     when (postViewState) {
         is PostViewState.Error -> Text(
             text = stringResource(string.loading_user_posts_error),
-            modifier= modifier
+            modifier = modifier
                 .fillMaxWidth(),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.error

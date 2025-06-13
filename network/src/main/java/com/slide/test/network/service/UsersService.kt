@@ -29,6 +29,6 @@ interface UsersService {
     @POST("public-api/users")
     fun createUser(@Body createRequestDto: CreateUserRequestDto): Single<ResponseDto<UserDto>>
 
-    @GET("public-api/users/{userId}/posts")
+    @GET("public-api/users/{userId}/posts?page=1&per_page=1")
     suspend fun getUserPosts(@Path("userId") userId: Long): ResponseDto<List<PostDto>>
 }

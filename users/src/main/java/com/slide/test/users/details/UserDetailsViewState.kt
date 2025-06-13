@@ -24,9 +24,9 @@ sealed class UserAvatar {
 }
 
 sealed class PostViewState {
-    object Loading: PostViewState()
-    data class Error(val message: String): PostViewState()
-    data class Success(val post: PostUI?): PostViewState()
+    object Loading : PostViewState()
+    data class Error(val message: String) : PostViewState()
+    data class Success(val post: PostUI?) : PostViewState()
 }
 
 data class PostUI(
@@ -34,9 +34,11 @@ data class PostUI(
     val body: String,
 )
 
-fun PostModel.toPostUI(): PostUI {
-    return PostUI(
-        title = title,
-        body = body,
-    )
+fun PostModel?.toPostUI(): PostUI? {
+    return this?.let {
+        PostUI(
+            title = title,
+            body = body,
+        )
+    }
 }

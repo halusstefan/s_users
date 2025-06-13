@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -31,7 +31,7 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 class UserDetailsViewModelTest {
 
-    private val testDispatcher = StandardTestDispatcher()
+    private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var usersRepository: UsersRepository
     private lateinit var userAvatarFactory: UserAvatarFactory
     private lateinit var savedStateHandle: SavedStateHandle
@@ -76,14 +76,10 @@ class UserDetailsViewModelTest {
     @Test
     fun `viewState emits Success when user and posts are loaded`() =
         runTest(testDispatcher.scheduler) {
-            val mockPosts = listOf(PostModel(1, testUserId, "Post Title 1", "Post Body 1"))
+            val mockPost = PostModel(1, testUserId, "Post Title 1", "Post Body 1")
             whenever(usersRepository.getUser(testUserId)).thenReturn(mockUser)
-            whenever(usersRepository.getUserPosts(testUserId)).thenReturn(
-                flowOf(
-                    Result.Success(
-                        mockPosts
-                    )
-                )
+            whenever(usersRepository.getUserPost(testUserId)).thenReturn(
+                flowOf(Result.Success(mockPost))
             )
 
             initViewModel()
@@ -111,12 +107,8 @@ class UserDetailsViewModelTest {
     fun `viewState emits Success with NoPosts when user loaded but no posts`() =
         runTest(testDispatcher.scheduler) {
             whenever(usersRepository.getUser(testUserId)).thenReturn(mockUser)
-            whenever(usersRepository.getUserPosts(testUserId)).thenReturn(
-                flowOf(
-                    Result.Success(
-                        emptyList()
-                    )
-                )
+            whenever(usersRepository.getUserPost(testUserId)).thenReturn(
+                flowOf(Result.Success(null))
             )
 
             initViewModel()
@@ -134,12 +126,8 @@ class UserDetailsViewModelTest {
     @Test
     fun `viewState emits Error when getUser returns null`() = runTest(testDispatcher.scheduler) {
         whenever(usersRepository.getUser(testUserId)).thenReturn(null)
-        whenever(usersRepository.getUserPosts(testUserId)).thenReturn(
-            flowOf(
-                Result.Success(
-                    emptyList()
-                )
-            )
+        whenever(usersRepository.getUserPost(testUserId)).thenReturn(
+            flowOf(Result.Success(null))
         )
 
         initViewModel()
@@ -155,15 +143,11 @@ class UserDetailsViewModelTest {
     @Test
     fun `viewState emits Success with PostError when getUserPosts returns Error`() =
         runTest(testDispatcher.scheduler) {
-            val postsErrorMessage = "Failed to load posts"
-            val postsException = IOException(postsErrorMessage)
+            val postErrorMessage = "Failed to load posts"
+            val postsException = IOException(postErrorMessage)
             whenever(usersRepository.getUser(testUserId)).thenReturn(mockUser)
-            whenever(usersRepository.getUserPosts(testUserId)).thenReturn(
-                flowOf(
-                    Result.Error(
-                        postsException
-                    )
-                )
+            whenever(usersRepository.getUserPost(testUserId)).thenReturn(
+                flowOf(Result.Error(postsException))
             )
 
             initViewModel()
@@ -174,7 +158,7 @@ class UserDetailsViewModelTest {
                 assertEquals(testUserName, successState.userName)
                 assertTrue(successState.postViewState is PostViewState.Error)
                 assertEquals(
-                    postsErrorMessage,
+                    postErrorMessage,
                     (successState.postViewState as PostViewState.Error).message
                 )
                 cancelAndConsumeRemainingEvents()
@@ -185,7 +169,7 @@ class UserDetailsViewModelTest {
     fun `viewState emits Success with PostLoading when getUserPosts returns Loading`() =
         runTest(testDispatcher.scheduler) {
             whenever(usersRepository.getUser(testUserId)).thenReturn(mockUser)
-            whenever(usersRepository.getUserPosts(testUserId)).thenReturn(flowOf(Result.Loading))
+            whenever(usersRepository.getUserPost(testUserId)).thenReturn(flowOf(Result.Loading))
 
             initViewModel()
 
@@ -201,12 +185,12 @@ class UserDetailsViewModelTest {
     @Test
     fun `viewState updates correctly when posts flow emits multiple values`() =
         runTest(testDispatcher.scheduler) {
-            val initialPosts = listOf(PostModel(1, testUserId, "Old Post", "Old Body"))
-            val updatedPosts = listOf(PostModel(2, testUserId, "New Post", "New Body"))
-            val postsFlow = MutableStateFlow<Result<List<PostModel>>>(Result.Loading)
+            val initialPosts = PostModel(1, testUserId, "Old Post", "Old Body")
+            val updatedPosts = PostModel(2, testUserId, "New Post", "New Body")
+            val postsFlow = MutableStateFlow<Result<PostModel?>>(Result.Loading)
 
             whenever(usersRepository.getUser(testUserId)).thenReturn(mockUser)
-            whenever(usersRepository.getUserPosts(testUserId)).thenReturn(postsFlow)
+            whenever(usersRepository.getUserPost(testUserId)).thenReturn(postsFlow)
 
             initViewModel()
 

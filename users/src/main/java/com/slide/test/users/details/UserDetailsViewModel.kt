@@ -7,7 +7,6 @@ import com.slide.test.core.Result
 import com.slide.test.repository.UsersRepository
 import com.slide.test.repository.model.PostModel
 import com.slide.test.repository.model.UserModel
-import com.slide.test.usecase.users.model.User
 import com.slide.test.users.common.UserAvatarFactory
 import com.slide.test.users.navigation.UserDetailsDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +30,7 @@ class UserDetailsViewModel @Inject constructor(
     val userId: Long = checkNotNull(
         savedStateHandle[UserDetailsDestination.Input.userIdArg]
     )
-    val viewState = userRepository.getUserPosts(userId)
+    val viewState = userRepository.getUserPost(userId)
         .combine(getUserDetailsFlow()) { postsResult, userDetails ->
             createUserDetailsViewState(postsResult, userDetails)
         }.stateIn(
@@ -45,7 +44,7 @@ class UserDetailsViewModel @Inject constructor(
     }
 
     private fun createUserDetailsViewState(
-        result: Result<List<PostModel>>,
+        result: Result<PostModel?>,
         user: UserModel?
     ): UserDetailsViewState {
         if (user == null) return UserDetailsViewState.Error("User not found")
@@ -60,12 +59,12 @@ class UserDetailsViewModel @Inject constructor(
 
 }
 
-private fun Result<List<PostModel>>.toPostViewState(): PostViewState {
+private fun Result<PostModel?>.toPostViewState(): PostViewState {
     return when (this) {
         is Result.Error -> PostViewState.Error(this.throwable?.localizedMessage ?: "")
         Result.Loading -> PostViewState.Loading
         is Result.Success<*> -> PostViewState.Success(
-            post = (this.data as List<PostModel>).firstOrNull()?.toPostUI()
+            post = (this.data as PostModel?).toPostUI()
         )
     }
 }
